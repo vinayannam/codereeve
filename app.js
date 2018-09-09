@@ -1,4 +1,4 @@
-const express = require('express');
+var express = require('express');
 
 var app = express();
 
@@ -14,7 +14,7 @@ var path = require('path');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.set('view engine', 'handlebars');
+app.set('view engine', 'ejs');
 
 app.get('/', routes.home);
 
