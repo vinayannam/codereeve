@@ -1,0 +1,24 @@
+{
+    "name": "codereeve",
+    "version": "1.0.0",
+    "description": "An online judge software",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vinayannam/codereeve.git"
+    },
+    "author": "Vinay & Arun",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/vinayannam/codereeve/issues"
+    },
+    "homepage": "https://github.com/vinayannam/codereeve#readme",
+    "dependencies": {
+        "body-parser": "^1.18.3",
+        "express": "^4.16.3",
+        "handlebars": "^4.0.12"
+    }
+}
