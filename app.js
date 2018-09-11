@@ -14,7 +14,9 @@ var path = require('path');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+
+app.set('view engine', 'html');
 
 app.get('/', routes.home);
 

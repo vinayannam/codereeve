@@ -1,11 +1,7 @@
 exports.home = function(req, res) {
     res.render('home', {
-        title: 'Code Reeve'
+        title: 'Code Reeve',
+        link: req.protocol + '://' + req.get('host') + req.originalUrl
     });
-};
-
-exports.notFound = function(req, res) {
-    res.render('notFound', {
-        title: "Oops, this page doesn't exist"
-    });
+    console.log('Sent home page');
 };
