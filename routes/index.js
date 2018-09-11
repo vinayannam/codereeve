@@ -3,5 +3,4 @@ exports.home = function(req, res) {
         title: 'Code Reeve',
         link: req.protocol + '://' + req.get('host') + req.originalUrl
     });
-    console.log('Sent home page');
 };
