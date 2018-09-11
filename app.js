@@ -20,6 +20,6 @@ app.set('view engine', 'html');
 
 app.get('/', routes.home);
 
-app.get('*', routes.notFound);
+app.get('*', routes.home);
 
 app.listen(process.env.PORT || 3000);
