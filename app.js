@@ -15,7 +15,7 @@ var expressValidator = require('express-validator');
 
 var db;
 
-mongo.MongoClient.connect("mongodb://localhost/codereeve" || "mongodb://vinayannam:Vinay@205@ds119993.mlab.com:19993/codereeve", { useNewUrlParser: true }, function(err, client) {
+mongo.MongoClient.connect('mongodb://localhost/codereeve' || process.env.MONGOLAB_URI, { useNewUrlParser: true }, function(err, client) {
     if (err) {
         console.log(err);
         process.exit(1);
