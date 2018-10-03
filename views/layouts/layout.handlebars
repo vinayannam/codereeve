@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>
+            {{title}}
+        </title>
+        <script src="https://use.fontawesome.com/20957ebe5b.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+        <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="/css/styles.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        {{#if user}}
+            <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+                <a class="navbar-brand" href="{{link}}">
+                    <img src="assets/reeve.png" width="30" height="30" class="d-inline-block align-top" alt=""> Code Reeve
+                </a>
+                <div class="collapse navbar-collapse flex-row-reverse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        {{#if admin}}
+                        <li class="nav-item {{#if add}}active{{else}}{{/if}} mr-sm-4">
+                            <a class="nav-link" href="/admin">Add</a>
+                        </li>
+                        <li class="nav-item {{#if list}}active{{else}}{{/if}} mr-sm-4">
+                            <a class="nav-link" href="/admin/list">List</a>
+                        </li>
+                        {{/if}}
+                        {{#if student}}
+                        <li class="nav-item {{#if current}}active{{else}}{{/if}} mr-sm-4">
+                            <a class="nav-link" href="/student">Current</a>
+                        </li>
+                        <li class="nav-item {{#if previous}}active{{else}}{{/if}} mr-sm-4">
+                            <a class="nav-link" href="/student/previous">Previous</a>
+                        </li>
+                        {{/if}}
+                        {{#if faculty}}
+                        <li class="nav-item {{#if add}}active{{else}}{{/if}} mr-sm-4">
+                            <a class="nav-link" href="/faculty">Create</a>
+                        </li>
+                        <li class="nav-item {{#if previous}}active{{else}}{{/if}} mr-sm-4">
+                            <a class="nav-link" href="/faculty/previous">Previous</a>
+                        </li>
+                        {{/if}}
+                        <li class="nav-item dropdown">
+                            <div class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Account
+                            </div>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="/users/logout">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        <canvas id="canvas"></canvas>
+        {{/if}}
+        {{{body}}}
+        <footer>
+        </footer>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/app.js"></script>
+    </body>

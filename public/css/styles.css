@@ -17,3 +17,38 @@
     left: 0;
     z-index: -1;
 }
+
+.v-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.login-center {
+    width: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.bg-lb {
+    background-color: #03a9f4;
+}
+
+.bg-fr {
+    background-color: #E95669;
+}
+
+.hill {
+    width: 100%;
+    left: 10%;
+    height: 0.3em;
+    bottom: 60%;
+    background: white;
+}
+
+.seesaw {
+    margin-top: 40%;
+}

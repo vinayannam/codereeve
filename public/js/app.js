@@ -83,3 +83,19 @@ function init() {
 }
 
 init()
+
+var add = $('#regsiter')
+var studentCheck = $('#student-check')
+var facultyCheck = $('#faculty-check')
+var currentEntry = $('.form-subjects .input-group:last')
+
+function addNew() {
+    var formSubjects = $('.form-subjects')
+    var newEntry = $(currentEntry.clone())
+    formSubjects.append(newEntry)
+    newEntry.find('input').val('')
+}
+
+function removeOne() {
+    $('.form-subjects .input-group:last').remove()
+}

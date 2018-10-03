@@ -1,0 +1,42 @@
+<body class="bg-lb">
+  <div class="container v-center">
+    <div class="row">
+      <div class="col-6 d-flex flex-column">
+        <img class="p-2 w-50 mx-auto" src="assets/reeve.png">
+        <h1 class="mt-4 text-center text-white">Code Reeve</h1>
+        <h6 class="text-center text-white">nobody can escape</h6>
+      </div>
+      <div class="col-6 bg-primary shadow rounded">
+        <form method="post" class="login-center" action="/users/login">
+          <h2 class="text-white">Login</h2>
+          <div class="input-group mt-5">
+            <div class="input-group-prepend">
+                <span class="input-group-text bg-fr text-white border-white" id="basic-addon1">>></span>
+            </div>
+            <input type="text" class="form-control border-white" name="username" placeholder="Username">
+          </div>
+          <div class="input-group mt-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text bg-fr text-white border-white" id="basic-addon2">>></span>
+            </div>
+            <input type="password" class="form-control border-white" name="password" placeholder="Password">
+          </div>
+          <div class="d-flex mt-3 flex-column">
+            <button type="submit" class="btn btn-success">Submit</button>
+              {{#if errors}}
+                {{#each errors}}
+                  <div class="alert alert-danger mt-3 text-center">{{msg}}</div>
+                {{/each}}
+              {{/if}}
+              {{#if success_msg}}
+                <div class="alert alert-success mt-3 text-center">{{success_msg}}</div>
+              {{/if}}
+              {{#if error_msg}}
+                <div class="alert alert-danger mt-3 text-center">{{error_msg}}</div>
+              {{/if}}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
