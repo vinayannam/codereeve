@@ -9,7 +9,7 @@ var session = require('express-session');
 var passport = require('passport');
 var expressValidator = require('express-validator');
 
-mongoose.connect('mongodb://localhost/codereeve', { useNewUrlParser: true });
+mongoose.connect('mongodb://vinayannam:Vinay@205@ds119993.mlab.com:19993/codereeve' || 'mongodb://localhost/codereeve', { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
 var db = mongoose.connection;
 
