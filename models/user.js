@@ -3,16 +3,13 @@ var bc = require('bcryptjs');
 
 // User Schema
 var UserSchema = mongoose.Schema({
-    userID: {
-        type: String,
-        index: true
-    },
-    password: {
-        type: String
-    },
-    type: {
-        type: String
-    }
+    firstName: { type: String },
+    lastName: { type: String },
+    userName: { type: String },
+    password: { type: String },
+    user: { type: String },
+    year: { type: String },
+    section: { type: String }
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);
@@ -26,8 +23,8 @@ module.exports.createUser = function(nU, callback) {
     });
 }
 
-module.exports.getUserByUsername = function(userID, callback) {
-    var query = { userID: userID };
+module.exports.getUserByUsername = function(username, callback) {
+    var query = { userName: username };
     User.findOne(query, callback);
 }
 
@@ -39,5 +36,19 @@ module.exports.comparePassword = function(password, hash, callback) {
     bc.compare(password, hash, function(err, isMatch) {
         if (err) throw err;
         callback(null, isMatch);
+    });
+}
+
+module.exports.getAllUsers = function(callback) {
+    User.where('user').ne('admin').then(callback)
+}
+
+module.exports.getAllFaculty = function(callback) {
+    User.where('user').equals('faculty').then(callback)
+}
+
+module.exports.deleteUser = function(username) {
+    User.deleteOne({ userName: username }, function(err) {
+        if (err) return handleError(err);
     });
 }

@@ -1,0 +1,67 @@
+<div class="container mt-5 mb-5">
+    {{#if errors}}
+        {{#each errors}}
+            <div class="alert alert-danger mt-3 text-center">{{msg}}</div>
+        {{/each}}
+        {{/if}}
+        {{#if success_msg}}
+        <div class="alert alert-success mt-3 text-center">{{success_msg}}</div>
+        {{/if}}
+        {{#if error_msg}}
+        <div class="alert alert-danger mt-3 text-center">{{error_msg}}</div>
+    {{/if}}
+    <form id="register" class="bg-white rounded shadow p-5" method="post" action="/admin/addcourse">
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label for="validationDefault01">Subject</label>
+                <input type="text" class="form-control" id="validationDefault01" placeholder="Subject" name="subject" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationDefault02">Faculty</label>
+                    <select class="form-control" id="username" name="username" required>
+                        {{#faculties}}
+                        <option>{{userName}}</option>
+                        {{/faculties}}
+                    </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationDefaultUsername">Semester</label>
+                    <select class="form-control" id="sem" name="sem" required>
+                        {{#sems}}
+                        <option>{{this}}</option>
+                        {{/sems}}
+                    </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="validationDefaultUsername">Year of Enrollment</label>
+                    <select class="form-control" id="year" name="year" required>
+                        {{#years}}
+                        <option>{{year}}</option>
+                        {{/years}}
+                    </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-3 mb-3">
+                <label for="validationDefaultType">Batch</label>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="section" id="csc-check" value="CSC" checked>
+                    <label class="form-check-label" for="csc-check">
+                        CSC
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="section" id="cse-check" value="CSE">
+                    <label class="form-check-label" for="cse-check">
+                        CSE
+                    </label>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+</div>

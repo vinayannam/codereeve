@@ -10,15 +10,15 @@
         {{#if error_msg}}
         <div class="alert alert-danger mt-3 text-center">{{error_msg}}</div>
     {{/if}}
-    <form id="register" class="bg-white rounded shadow p-5" method="post" action="/admin/register">
+    <form id="register" class="bg-white rounded shadow p-5" method="post" action="/admin/edit">
         <div class="form-row">
             <div class="col-md-6 mb-3">
                 <label for="validationDefault01">First name</label>
-                <input type="text" class="form-control" id="validationDefault01" placeholder="First name" name="firstname" required>
+                <input type="text" class="form-control" id="validationDefault01" placeholder="First name" name="firstname" value="{{firstName}}" required>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="validationDefault02">Last name</label>
-                <input type="text" class="form-control" id="validationDefault02" placeholder="Last name" name="lastname" required>
+                <input type="text" class="form-control" id="validationDefault02" placeholder="Last name" name="lastname" value="{{lastName}}" required>
             </div>
             <div class="col-md-6 mb-3">
                 <label for="validationDefaultUsername">Username</label>
@@ -26,7 +26,8 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroupPrepend2">@</span>
                     </div>
-                    <input type="text" class="form-control" id="validationDefaultUsername" placeholder="Username" aria-describedby="inputGroupPrepend2" name="username" required>
+                    <input type="hidden" name="originalun" value="{{userName}}">
+                    <input type="text" class="form-control" id="validationDefaultUsername" placeholder="Username" aria-describedby="inputGroupPrepend2" name="username" value="{{userName}}" required>
                 </div>
             </div>
             <div class="col-md-6 mb-3">

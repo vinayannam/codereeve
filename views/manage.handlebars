@@ -1,0 +1,34 @@
+<div class="container mt-5 mb-5">
+    {{#if errors}}
+        {{#each errors}}
+            <div class="alert alert-danger mt-3 text-center">{{msg}}</div>
+        {{/each}}
+        {{/if}}
+        {{#if success_msg}}
+        <div class="alert alert-success mt-3 text-center">{{success_msg}}</div>
+        {{/if}}
+        {{#if error_msg}}
+        <div class="alert alert-danger mt-3 text-center">{{error_msg}}</div>
+    {{/if}}
+    {{#each users}}
+        <form method="post" action="/admin/manage">
+            <div class="card rounded shadow p-3 mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5 class="card-title">{{lastName}} {{firstName}} <span class="badge badge-secondary">{{user}}</span></h5>
+                            <p class="card-text">Username : {{userName}}</p>
+                            <input type="hidden" name="username" value="{{userName}}">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button class="btn btn-secondary" type="submit" name="manage" value="edit">Edit</button>
+                                <button class="btn btn-danger" type="submit" name="manage" value="delete">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    {{/each}}
+</div>

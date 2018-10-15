@@ -5,14 +5,6 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../models/user');
 
-router.get('/register', function(req, res) {
-    res.render('register', {
-        title: 'Code Reeve',
-        link: req.protocol + '://' + req.get('host') + req.originalUrl,
-        register: true
-    });
-});
-
 router.get('/login', function(req, res) {
     res.render('login', {
         title: 'Code Reeve',
@@ -21,43 +13,9 @@ router.get('/login', function(req, res) {
     });
 });
 
-router.post('/register', function(req, res) {
-    var userID = req.body.userID;
-    var password = req.body.password;
-    var type = req.body.type;
-    var password2 = req.body.password2;
-
-    req.checkBody('userID', 'UserID is required').notEmpty();
-    req.checkBody('password', 'Password is required').notEmpty();
-    req.checkBody('type', 'Choose who the person is!').notEmpty();
-    req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
-
-    var errors = req.validationErrors();
-
-    if (errors) {
-        res.render('register', {
-            errors: errors
-        });
-    } else {
-        var newUser = new User({
-            userID: userID,
-            password: password,
-            type: type
-        });
-
-        User.createUser(newUser, function(err, user) {
-            if (err) throw err;
-        });
-
-        req.flash('success_msg', 'You are registered and can now login');
-
-        res.redirect('/users/login');
-    }
-});
-
 passport.use(new LocalStrategy(
-    function(userID, password, done) {
-        User.getUserByUsername(userID, function(err, user) {
+    function(username, password, done) {
+        User.getUserByUsername(username, function(err, user) {
             if (err) throw err;
             if (!user) {
                 return done(null, false, { message: "I don't know you!" });
@@ -67,7 +25,7 @@ passport.use(new LocalStrategy(
                 if (isMatch) {
                     return done(null, user);
                 } else {
-                    return done(null, false, { message: 'Use correct password ' + user.userID });
+                    return done(null, false, { message: 'Use correct password ' + user.username });
                 }
             });
         });

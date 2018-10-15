@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-
+var User = require('../models/user.js')
 router.get('/', ensureAuthenticated, function(req, res) {
-    if (req.user.type == 'admin') {
+    if (req.user.user == 'admin') {
         res.redirect('/admin');
-    } else if (req.user.type == 'faculty') {
+    } else if (req.user.user == 'faculty') {
         res.redirect('/faculty');
     } else {
         res.redirect('/student');

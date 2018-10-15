@@ -9,24 +9,9 @@ var session = require('express-session');
 var passport = require('passport');
 var expressValidator = require('express-validator');
 
-// mongoose.connect('mongodb://localhost/codereeve', { useNewUrlParser: true });
-// mongoose.set('useCreateIndex', true);
-// var db = mongoose.connection;
-
-var db;
-
-mongo.MongoClient.connect(process.env.MONGOLAB_URI, { useNewUrlParser: true }, function(err, client) {
-    if (err) {
-        console.log(err);
-        process.exit(1);
-    }
-    db = client.db();
-    console.log("Database connection ready");
-    var server = app.listen(process.env.PORT || 3000, function() {
-        var port = server.address().port;
-        console.log("App now running on port", port);
-    });
-});
+mongoose.connect('mongodb://localhost/codereeve', { useNewUrlParser: true });
+mongoose.set('useCreateIndex', true);
+var db = mongoose.connection;
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -94,3 +79,8 @@ app.use('/users', users);
 app.use('/admin', admin);
 app.use('/faculty', faculty);
 app.use('/student', student);
+
+var server = app.listen(process.env.PORT || 3000, function() {
+    var port = server.address().port;
+    console.log("App now running on port", port);
+});

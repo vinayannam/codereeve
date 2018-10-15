@@ -6,7 +6,8 @@ router.get('/', ensureAuthenticated, function(req, res) {
         title: 'Code Reeve',
         link: req.protocol + '://' + req.get('host') + req.originalUrl,
         student: true,
-        userID: req.user.userID,
+        username: req.user.userName,
+        name: `${req.user.lastName} ${req.user.firstName}`,
         current: true
     });
 });
@@ -16,7 +17,7 @@ router.get('/previous', ensureAuthenticated, function(req, res) {
         title: 'Code Reeve',
         link: req.protocol + '://' + req.get('host') + req.originalUrl,
         student: true,
-        userID: req.user.userID,
+        username: req.user.username,
         previous: true
     });
 });

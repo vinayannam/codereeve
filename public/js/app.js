@@ -85,8 +85,6 @@ function init() {
 init()
 
 var add = $('#regsiter')
-var studentCheck = $('#student-check')
-var facultyCheck = $('#faculty-check')
 var currentEntry = $('.form-subjects .input-group:last')
 
 function addNew() {
@@ -99,3 +97,15 @@ function addNew() {
 function removeOne() {
     $('.form-subjects .input-group:last').remove()
 }
+
+$('input[type=radio][name=user]').change(function() {
+    if (this.value === 'student') {
+        $('#csc-check').prop('disabled', false)
+        $('#cse-check').prop('disabled', false)
+        $('#year').prop('disabled', false)
+    } else if (this.value === 'faculty') {
+        $('#csc-check').prop('disabled', true)
+        $('#cse-check').prop('disabled', true)
+        $('#year').prop('disabled', true)
+    }
+});
