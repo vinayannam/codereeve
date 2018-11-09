@@ -1,0 +1,21 @@
+
+<style type="text/css" media='screen'>
+#editor {
+height: 400px;
+}
+</style>
+<div class="rounded bg-white shadow p-3 mb-5">
+<pre id="editor">
+var x = 100;
+var text = "hello, world";
+
+console.log(x);
+alert(text);
+</pre>
+</div>
+<script src="ace/build/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+var editor = ace.edit("editor");
+editor.setTheme("ace/theme/monokai");
+editor.getSession().setMode("ace/mode/javascript");
+</script>

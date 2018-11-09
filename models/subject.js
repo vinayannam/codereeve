@@ -27,8 +27,8 @@ module.exports.getSubjectByYear = function(year, callback) {
     Subject.findOne(query, callback);
 }
 
-module.exports.getSubjectByCode = function(subjectCode, callback) {
-    var query = { subjectCode: subjectCode };
+module.exports.getSubjectByFaculty = function(faculty, callback) {
+    var query = { faculty: faculty };
     Subject.find(query, callback);
 }
 

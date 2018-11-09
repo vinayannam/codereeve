@@ -1,5 +1,66 @@
-<div id="main" class="container p-md-5">
-    <div class="jumbotron bg-white shadow">
-        Hello {{name}}
+<div class="container mt-5 mb-5">
+    {{#if errors}}
+        {{#each errors}}
+            <div class="alert alert-danger mt-3 text-center">{{msg}}</div>
+        {{/each}}
+        {{/if}}
+        {{#if success_msg}}
+        <div class="alert alert-success mt-3 text-center">{{success_msg}}</div>
+        {{/if}}
+        {{#if error_msg}}
+        <div class="alert alert-danger mt-3 text-center">{{error_msg}}</div>
+    {{/if}}
+    <div class="jumbotron bg-white shadow-lg mb-3">
+        <h1>Hello {{name}}.</h1><hr>
+        <p class="lead"> You got to do them buddy.</p>
     </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 mb-3"><input class="form-control text-center shadow-lg bg-white border-0" id="myInput" type="text" placeholder="Search.."></div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="list-group bg-white shadow">
+    {{#each assignment}}
+        <form method="post" action="/student/assignment" class="list-group-item list-group-item-action">
+        <div onClick="javascript:this.parentNode.submit()" >
+            <input type="hidden" name="id" value="{{_id}}">
+            <div class="row">
+                <div class="col-md-8">
+                    <h5 class="card-title">{{title}} ({{subject}}) </h5>
+                </div>
+                <div class="col-md-4">
+                    <h5><span id="{{_id}}" class="badge badge-secondary"></span></h5>
+                    <script>
+                        var dt{{@index}} = new Date('{{datetime}}').getTime();
+                        var x = setInterval(function() {
+                            var now = new Date().getTime();
+                            var distance = dt{{@index}} - now;
+                            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                            document.getElementById("{{_id}}").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+                            if (distance < 0) {
+                                clearInterval(x);
+                                document.getElementById("{{_id}}").innerHTML = "EXPIRED";
+                                location.reload()
+                            }
+                        }, 1000);
+                    </script>
+                </div>
+            </div>
+        </div>
+        </form>
+    {{/each}}
+    </div>
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("form").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
 </div>

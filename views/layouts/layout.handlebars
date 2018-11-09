@@ -7,13 +7,21 @@
         <title>
             {{title}}
         </title>
-        <script src="https://use.fontawesome.com/20957ebe5b.js"></script>
-        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+        <link href="/css/font.css" rel="stylesheet" type="text/css">
         <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
         <link href="/css/styles.css" rel="stylesheet" type="text/css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        {{#if faculty}}
+            <script src="/fontawesome/js/all.min.js"></script>
+            <script src="/gijgo/gijgo.min.js" type="text/javascript"></script>
+            <link href="/gijgo/gijgo.min.css" rel="stylesheet" type="text/css" />
+        {{else}}
+            
+        {{/if}}
     </head>
-    <body>
         {{#if user}}
+        <body id="main">
             <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
                 <a class="navbar-brand" href="{{link}}">
                     <img src="assets/reeve.png" width="30" height="30" class="d-inline-block align-top" alt=""> Code Reeve
@@ -47,14 +55,6 @@
                             <a class="nav-link" href="/faculty/previous">Previous</a>
                         </li>
                         {{/if}}
-                        {{!-- <li class="nav-item dropdown">
-                            <div class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Account
-                            </div>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="/users/logout">Logout</a>
-                            </div>
-                        </li> --}}
                         <li class="nav-item mr-sm-4">
                             <a class="nav-link" href="/users/logout">Logout</a>
                         </li>
@@ -62,11 +62,20 @@
                 </div>
             </nav>
         <canvas id="canvas"></canvas>
-        {{/if}}
+        {{else}}
+        <body>
+         {{/if}}   
+            <div class="bg"></div>
+            <div class="bg bg2"></div>
+            <div class="bg bg3"></div>
         {{{body}}}
-        <footer>
-        </footer>
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
         <script src="js/app.js"></script>
+        {{#if faculty}}
+            <script src="js/vue.js"></script>
+            <script src="js/facultyFE.js"></script>
+        {{/if}}
+        {{#if student}}
+            <script src="js/vue.js"></script>
+            <script src="js/studentFE.js"></script>
+        {{/if}}
     </body>

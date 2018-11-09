@@ -1,0 +1,272 @@
+<div class="container mt-5 mb-5">
+    {{#if errors}}
+        {{#each errors}}
+            <div class="alert alert-danger mt-3 text-center">{{msg}}</div>
+        {{/each}}
+        {{/if}}
+        {{#if success_msg}}
+        <div class="alert alert-success mt-3 text-center">{{success_msg}}</div>
+        {{/if}}
+        {{#if error_msg}}
+        <div class="alert alert-danger mt-3 text-center">{{error_msg}}</div>
+    {{/if}}
+    {{#if sub}}
+
+    {{/if}}
+        <input type="hidden" name="id" value="{{assignment._id}}">
+        <div class="form-row">
+            {{!-- title --}}
+            <div class="col-md-8 mb-3">
+                <div class="bg-white rounded shadow p-5 jumbotron">
+                    <h2 class="text-center text-uppercase">{{assignment.title}} ({{assignment.subject}}) </h2>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="bg-primary rounded p-5 jumbotron">
+                    <h2><span id="{{assignment._id}}" class="badge badge-primary w-100">00d 00h 00m 00s</span></h2>
+                </div>
+            </div>
+            <script>
+                        var dt = new Date('{{assignment.datetime}}').getTime();
+                        var x = setInterval(function() {
+                            var now = new Date().getTime();
+                            var distance = dt{{@index}} - now;
+                            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                            document.getElementById("{{assignment._id}}").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+                            if (distance < 0) {
+                                clearInterval(x);
+                                document.getElementById("{{assignment._id}}").innerHTML = "EXPIRED";
+                            }
+                        }, 1000);
+                    </script>
+            {{!-- description --}}
+            <div class="col-md-12 mb-3">
+                <div class="bg-white rounded shadow p-3">
+                    <h3 class="text-left">Description:</h3>
+                    <hr>
+                    <p class="text-left">{{assignment.desc}}</p>
+                </div>
+            </div>
+        {{!-- input --}}
+            <div class="col-md-12 mb-3">
+                <div class="bg-white rounded shadow p-3">
+                    <h3 class="text-left">Input:</h3>
+                    <hr>
+                    <p style="white-space: pre-wrap;" class="text-left">{{assignment.input}}</p>
+                </div>
+            </div>
+        {{!-- output --}}
+            <div class="col-md-12 mb-3">
+                <div class="bg-white rounded shadow p-3">
+                    <h3 class="text-left">Output:</h3>
+                    <hr>
+                    <p style="white-space: pre-wrap;" class="text-left">{{assignment.output}}</p>
+                </div>
+            </div>
+        {{!-- Example in box--}}
+            <div class="col-md-6 mb-5">
+                <div class="bg-white rounded shadow p-3">
+                    <h3 class="text-left">Example Input:</h3>
+                    <hr>
+                    <p style="white-space: pre-wrap;" class="text-left">{{assignment.intest}}</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-5">
+                <div class="bg-white rounded shadow p-3">
+                    <h3 class="text-left">Example Output:</h3>
+                    <hr>
+                    <p style="white-space: pre-wrap;" class="text-left">{{assignment.outtest}}</p>
+                </div>
+            </div>
+            {{!-- Editor--}}
+        <script src="codemirror/lib/codemirror.js"></script>
+        <link rel="stylesheet" href="codemirror/lib/codemirror.css"/>
+        <link rel="stylesheet" href="codemirror/theme/monokai.css"/>
+        <link rel="stylesheet" href="codemirror/addon/hint/show-hint.css"/>
+        <link rel="stylesheet" href="codemirror/addon/fold/foldgutter.css"/>
+        <link rel="stylesheet" href="codemirror/addon/dialog/dialog.css"/>
+        <link rel="stylesheet" href="codemirror/addon/lint/lint.css"/>
+        <script src="codemirror/mode/javascript/javascript.js"></script>
+        <script src="codemirror/mode/clike/clike.js"></script>
+        <script src="codemirror/mode/python/python.js"></script>
+        <script src="codemirror/addon/hint/c-hint.js"></script>
+        <script src="codemirror/addon/hint/python-hint.js"></script>
+        <script src="codemirror/addon/hint/show-hint.js"></script>
+        <script src="codemirror/addon/hint/anyword-hint.js"></script>
+        <script src="codemirror/addon/fold/foldcode.js"></script>
+        <script src="codemirror/addon/fold/foldgutter.js"></script>
+        <script src="codemirror/addon/fold/brace-fold.js"></script>
+        <script src="codemirror/addon/fold/comment-fold.js"></script>
+        <script src="codemirror/addon/fold/indent-fold.js"></script>
+        <script src="codemirror/addon/dialog/dialog.js"></script>
+        <script src="codemirror/addon/search/searchcursor.js"></script>
+        <script src="codemirror/addon/search/search.js"></script>
+        <script src="codemirror/addon/edit/matchbrackets.js"></script>
+        <script src="codemirror/addon/edit/closebrackets.js"></script>
+        <script src="codemirror/addon/lint/lint.js"></script>
+        <script src="codemirror/addon/mode/loadmode.js"></script>
+        <script src="codemirror/addon/runmode/runmode.js"></script>
+        <script src="codemirror/underscore-min.js"></script>
+        <div class= "col-md-12 mb-5">
+            <div class="window">
+                <div class="window-header">
+                    <div class="action-buttons"></div>
+                    <label class="title-la">Language:</label>
+                    <select class="language" id="language" name="code" onchange="setEditor()">
+                        <option value="c" selected onclick="setEditor('c')">C</option>
+                        <option value="cpp" onclick="setEditor('cpp')">C++</option>
+                        <option value="java" onclick="setEditor('java')">Java</option>
+                        <option value="python" onclick="setEditor('python')">Python</option>
+                    </select>
+                </div>
+                <div class="window-body" >
+                    <textarea id="editor" class="code-input"></textarea>
+                </div>
+            </div>
+        </div>
+        </div>
+        {{#if sub}}
+        <div class="btn-group btn-group-lg mb-3" role="group" aria-label="Basic example">
+            <button id="save" type="button" class="btn btn-success">Save  </button>
+            <button id="run" type="button" class="btn btn-secondary">Run   </button>
+            <button id="submit" type="button" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="alert alert-primary" id="mess-save" role="alert"> Not Saved
+        </div>
+        <div class="alert alert-danger" id="mess-error" role="alert"> Not Saved
+        </div>
+        <div id="testcases">
+        </div>
+        <script>
+            let languages = {
+                c: {'text':'// You are writing in C\n\n'+'#include<stdio.h>\n' + 'int main(){\n'+ '\tprintf("Code it the rght way :)");\n'+'}',
+                    'mode': 'text/x-csrc', 'type': 'c', 'assignmentID':'{{assignment._id}}'},
+                cpp: {'text':'// You are writing in C++\n\n'+'#include<stdio>\n' + 'int main(){\n'+ '\tprintf("Code it the rght way :)");\n'+'}',
+                      'mode': 'text/x-c++src', 'type': 'cpp', 'assignmentID':'{{assignment._id}}'},
+                java: {'text':'// You are writing in Java.\n\n'+'public class Problem{\n' + '\tpublic static void main(String args[]){\n'+ '\t\tSystem.out.println("Code it the rght way :)");\n'+'\t}\n'+'}',
+                    'mode': 'text/x-java', 'type': 'java', 'assignmentID':'{{assignment._id}}'},
+                python: {'text':'# You are writing in Python3\n\n'+'print("Code it the rght way :)")',
+                    'mode': 'python', 'type': 'python', 'assignmentID':'{{assignment._id}}'}
+            };
+            $.ajax({
+                type: "POST",
+                url: '/student/saved',
+                data: {'assignmentID':'{{assignment._id}}'},
+                success: function(data, msg){
+                    for(var i=0; i< data.length;i++){
+                        languages[data[i].type].text = data[i].code
+                    }
+                    setEditor()
+                }
+            });
+            var codeLang;
+            function setEditor() {
+                $('#mess-save').hide();
+                $('#mess-error').hide();
+                $('#testcases').hide();
+                var language = document.getElementById("language");
+                var selectedValue = language.options[language.selectedIndex].value;
+                codeLang = selectedValue;
+                let codemirror = CodeMirror.fromTextArea(document.getElementById('editor'),
+                    {
+                        lineNumbers: true,
+                        matchBrackets: true,
+                        closeBrackets: true,
+                        mode: {name: languages[selectedValue].mode, globalVars: true},
+                        lineWrapping: true,
+                        theme: "monokai",
+                        tabSize: 4,
+                        indentUnit: 4,
+                        foldGutter: true,
+                        lint: true,
+                        hint: 'anyword',
+                        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", 'CodeMirror-lint-markers']
+                    }
+                );
+                codemirror.setValue(languages[selectedValue].text)
+                codemirror.setSize(null, 500);
+                codemirror.on("inputRead", function(instance) {
+                    languages[selectedValue].text = instance.getValue();
+                    if (instance.state.completionActive) {
+                        return;
+                    }
+                    var cur = instance.getCursor();
+                    var token = instance.getTokenAt(cur);
+                    var string = '';
+                    if (token.string.match(/^[.`\w@]\w*$/)) {
+                        string = token.string;
+                    }
+                    if (string.length > 0) {
+                        CodeMirror.showHint(instance, CodeMirror.hint.auto, {completeSingle:false});
+                        if(selectedValue == 'java'){
+
+                        }else if(selectedValue == 'python'){
+                            CodeMirror.showHint(instance, CodeMirror.hint.python, {completeSingle:false});
+                        }else{
+                            CodeMirror.showHint(instance, CodeMirror.hint.c, {completeSingle:false});
+                        }
+                    }
+                });
+            }
+            $('#save').on('click',()=>{
+                $('#mess-error').hide();
+                $('#mess-save').hide();
+                $('#testcases').hide();
+                $('#testcases').empty();
+                setTimeout(()=>{
+                    $('#mess-save').show();
+                }, 2000)
+                $('#mess-save').text('Saved in '+codeLang);
+                $.ajax({
+                    type: "POST",
+                    url: '/student/save',
+                    data: languages[codeLang],
+                    dataType: 'application/json'
+                });
+            });
+            var score = 0;
+            $('#run').on('click',()=>{
+                $('#mess-error').hide();
+                $('#mess-save').hide();
+                $('#testcases').hide();
+                $('#testcases').empty();
+                $.ajax({
+                    type: "POST",
+                    url: '/student/run',
+                    data: {type:codeLang, assignmentID:'{{assignment._id}}', user:'{{username}}'},
+                    success: function(data, msg){
+                        if(data.exitCode == 1){
+                            $('#mess-error').show();
+                            $('#mess-error').text('Error: '+data.errorType+'\nTrace: '+data.stderr);
+                        }
+                        if(data.exitCode == null){
+                            $('#mess-error').show();
+                            $('#mess-error').text('Error: '+data.errorType);
+                        }
+                        if(data.exitCode == 0){
+                            $('#mess-error').hide();
+                            var testcases = data.stdout;
+                            console.log(testcases)
+                            var s = function(i, j, k){
+                                return '<div class="alert alert-'+j+' col-md-3 float-left">Testcase: '+(i+1)+' '+k+'.</div>';
+                            }
+                            $('#testcases').show();
+                            for(var i=0 ;i< testcases.length; i++){
+                                if(testcases[i]){
+                                    $('#testcases').append(s(i, 'success', 'passed'))
+                                    score++;
+                                }else{
+                                    $('#testcases').append(s(i, 'danger','failed'))
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+        <script async type="text/javascript" src="codemirror/autocomplete.js"></script>
+    {{/if}}
+</div>

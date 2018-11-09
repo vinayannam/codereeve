@@ -1,0 +1,70 @@
+<div class="container mt-5 mb-5">
+    {{#if errors}}
+        {{#each errors}}
+            <div class="alert alert-danger mt-3 text-center">{{msg}}</div>
+        {{/each}}
+        {{/if}}
+        {{#if success_msg}}
+        <div class="alert alert-success mt-3 text-center">{{success_msg}}</div>
+        {{/if}}
+        {{#if error_msg}}
+        <div class="alert alert-danger mt-3 text-center">{{error_msg}}</div>
+    {{/if}}
+    <form ref='uploadForm'  id="uploadForm" encType="multipart/form-data" class="bg-white rounded shadow p-5" method="post" action="/faculty/assignment">
+        <div class="form-row">
+            <div class="col-md-12 mb-3">
+                <label for="subject">Select Subject</label>
+                <input type="hidden" name="facname" value="{{name}}">
+                <select class="form-control" id="subject" name="subject" required>
+                    {{#subjects}}
+                    <option>{{subject}} - {{batch}} (sem: {{sem}}, batch: {{year}})</option>
+                    {{/subjects}}
+                </select>
+            </div>
+            {{!-- title --}}
+            <div class="col-md-12 mb-3">
+                <label for="title">Title of the Assignment</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            {{!-- description --}}
+            <div class="col-md-12 mb-3">
+                <label for="desc">Description</label>
+                <textarea type="text" class="form-control" id="desc" name="desc" rows="8" required></textarea>
+            </div>
+        {{!-- input --}}
+            <div class="col-md-12 mb-3">
+                <label for="input">Input</label>
+                <textarea type="text" class="form-control" id="input" name="input" rows="5" required></textarea>
+            </div>
+        {{!-- output --}}
+            <div class="col-md-12 mb-3">
+                <label for="output">Ouput</label>
+                <textarea type="text" class="form-control" id="output" name="output" rows="5" required></textarea>
+            </div>
+        {{!-- Example in box--}}
+            <div class="col-md-12 mb-3">
+                <label for="input_t">Example Test Cases - Input</label>
+                <textarea type="text" class="form-control" id="input_t" name="intest" rows="5" required></textarea>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="output_t">Example Test Cases - Output</label>
+                <textarea type="text" class="form-control" id="output_t" name="outtest" rows="5" required></textarea>
+            </div>
+        {{!-- testcases file--}}
+            <div class="col-md-6 mb-5">
+                <label for="tcf">Testcases file ('.txt' only)</label>
+                <input type="file" class="form-control-file" id="tcf" name="tcf" accept=".txt" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="solution">Solution file ('.txt' only)</label>
+                <input type="file" class="form-control-file" id="solution" name="solution" accept=".txt" required>
+            </div>
+        {{!-- deadline --}}
+            <div class="col-md-6 mb-3">
+                <label for="datepicker">Deadline</label>
+				<input type="text" class="form-control" id="datepicker" name="datetime" readonly required>
+			</div>
+        </div>
+        <button class="btn btn-primary" type="submit">Add the assignment</button>
+    </form>
+</div>

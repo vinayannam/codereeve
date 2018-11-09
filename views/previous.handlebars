@@ -1,0 +1,50 @@
+<div class="container mt-5 mb-5">
+    {{#if errors}}
+        {{#each errors}}
+            <div class="alert alert-danger mt-3 text-center">{{msg}}</div>
+        {{/each}}
+        {{/if}}
+        {{#if success_msg}}
+        <div class="alert alert-success mt-3 text-center">{{success_msg}}</div>
+        {{/if}}
+        {{#if error_msg}}
+        <div class="alert alert-danger mt-3 text-center">{{error_msg}}</div>
+    {{/if}}
+    {{#each assignment}}
+        <form method="post" action="/faculty/manage">
+            <div class="card rounded shadow p-3 mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h5 class="card-title">{{title}} <span id="{{_id}}" class="badge badge-secondary"></span></h5>
+                            <script>
+                            var dt{{@index}} = new Date('{{datetime}}').getTime();
+                            var x = setInterval(function() {
+                                var now = new Date().getTime();
+                                var distance = dt{{@index}} - now;
+                                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                                document.getElementById("{{_id}}").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+                                if (distance < 0) {
+                                    clearInterval(x);
+                                    document.getElementById("{{_id}}").innerHTML = "EXPIRED";
+                                }
+                            }, 1000);
+                            </script>
+                            <p class="card-text">{{subject}} - {{section}} (Sem: {{sem}}, Batch: {{batch}}) </p>
+                            <input type="hidden" name="id" value="{{_id}}">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button class="btn btn-secondary" type="submit" name="manage" value="edit">Edit</button>
+                                <button class="btn btn-danger" data-toggle="confirmation">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    {{/each}}
+</div>

@@ -8,6 +8,8 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
 var expressValidator = require('express-validator');
+var fileUpload = require('express-fileupload');
+
 
 mongoose.connect('mongodb://localhost/codereeve', { useNewUrlParser: true });
 mongoose.set('useCreateIndex', true);
@@ -66,6 +68,8 @@ app.use(expressValidator({
 
 app.use(flash());
 
+app.use(fileUpload());
+
 app.use(function(req, res, next) {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
@@ -79,6 +83,28 @@ app.use('/users', users);
 app.use('/admin', admin);
 app.use('/faculty', faculty);
 app.use('/student', student);
+
+
+app.post('/temp', function(req, res) {
+
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    let sampleFile = req.files.tcf;
+
+    // Use the mv() method to place the file somewhere on your server
+    sampleFile.mv(__dirname + '/uploads/left.png', function(err) {
+        if (err)
+            return res.status(500).send(err);
+
+        res.send('File uploaded!');
+    });
+});
+
+app.get('/temp', function(req, res) {
+    res.render('temp', {
+        title: 'Code Reeve',
+        link: req.protocol + '://' + req.get('host') + req.originalUrl,
+    });
+});
 
 var server = app.listen(process.env.PORT || 3000, function() {
     var port = server.address().port;
