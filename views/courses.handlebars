@@ -11,11 +11,15 @@
         <div class="alert alert-danger mt-3 text-center">{{error_msg}}</div>
     {{/if}}
     <form class="mb-3" method="get" action="/admin/addcourse">
-        <button class="btn btn-success" type="submit">Add a New Entry</button>
+        <div class="row">
+                <div class="col-md-4"><button class="btn btn-success w-100" type="submit">Add a New Entry</button></div>
+                <div class="col-md-4 mb-3"><input class="form-control text-center shadow-lg bg-white border-0" id="myInput" type="text" placeholder="Search.."></div>
+                <div class="col-md-4"></div>
+            </div>
     </form>
     <div class="row">
         {{#each entries}}
-            <div class="col-md-4">
+            <div class="col-md-4 entries">
                 <div class="card rounded shadow p-3 mb-3">
                     <div class="card-body">
                         <p class="card-text">Sem: {{sem}} - {{subject}} ({{batch}}, {{year}})</p>
@@ -24,5 +28,15 @@
                 </div>
             </div>
         {{/each}}
+        <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".entries").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
     </div>
 </div>

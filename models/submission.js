@@ -59,3 +59,8 @@ module.exports.getSubmissionByUA = function(assignmentID, user, callback) {
     var query = { user: user, assignmentID: assignmentID }
     Submission.find(query, callback)
 }
+
+module.exports.getSubmissionByA = function(assignmentID, callback) {
+    var query = { assignmentID: assignmentID }
+    Submission.find(query, callback)
+}

@@ -102,6 +102,7 @@ router.post('/run', ensureAuthenticated, function(req, res) {
                         return;
                     } else {
                         fs.readFile(solution, "utf8", function(err, output) {
+                            var score = 0;
                             var splitOutput = output.split('\n')
                             var splitStdout = result.stdout.split('\n')
                             splitOutput = splitOutput.filter(function(el) {
@@ -118,10 +119,12 @@ router.post('/run', ensureAuthenticated, function(req, res) {
                             for (var i = 0; i < splitOutput.length; i++) {
                                 if (splitOutput[i] === splitStdout[i]) {
                                     sol.push(true)
+                                    score++;
                                 } else {
                                     sol.push(false)
                                 }
                             }
+
                             res.send({ exitCode: 0, stdout: sol })
                         })
                     }
@@ -132,6 +135,23 @@ router.post('/run', ensureAuthenticated, function(req, res) {
         });
     });
 })
+
+router.post('/submitted', ensureAuthenticated, function(req, res) {
+    var assignmentID = req.body.assignmentID;
+    Submission.getSubmissionByA(assignmentID, function(err, subissions) {
+        if (err) throw err;
+        var out = []
+        subissions.forEach(element => {
+            out.push({
+                user: element.user,
+                datetime: (new Date(element.datetime)).toLocaleString(),
+                type: element.type,
+                score: element.score
+            })
+        })
+        res.send(out)
+    });
+});
 
 router.post('/save', ensureAuthenticated, function(req, res) {
     var code = req.body.text;

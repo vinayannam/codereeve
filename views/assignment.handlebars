@@ -41,44 +41,68 @@
                                 document.getElementById("{{assignment._id}}").innerHTML = "EXPIRED";
                             }
                         }, 1000);
+            </script>
+            <div class="col-md-8">
+                <div class="row">
+                    {{!-- description --}}
+                    <div class="col-md-12 mb-3">
+                        <div class="bg-white rounded shadow p-3">
+                        <h3 class="text-left">Description:</h3>
+                        <hr>
+                        <p class="text-left">{{assignment.desc}}</p>
+                        </div>
+                    </div>
+                    {{!-- input --}}
+                    <div class="col-md-12 mb-3">
+                        <div class="bg-white rounded shadow p-3">
+                            <h3 class="text-left">Input:</h3>
+                            <hr>
+                            <p style="white-space: pre-wrap;" class="text-left">{{assignment.input}}</p>
+                        </div>
+                    </div>
+                    {{!-- output --}}
+                    <div class="col-md-12 mb-3">
+                        <div class="bg-white rounded shadow p-3">
+                            <h3 class="text-left">Output:</h3>
+                            <hr>
+                            <p style="white-space: pre-wrap;" class="text-left">{{assignment.output}}</p>
+                        </div>
+                    </div>
+                    {{!-- Example in box--}}
+                    <div class="col-md-6 mb-5">
+                        <div class="bg-white rounded shadow p-3">
+                            <h3 class="text-left">Example Input:</h3>
+                            <hr>
+                            <p style="white-space: pre-wrap;" class="text-left">{{assignment.intest}}</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-5">
+                        <div class="bg-white rounded shadow p-3">
+                            <h3 class="text-left">Example Output:</h3>
+                            <hr>
+                            <p style="white-space: pre-wrap;" class="text-left">{{assignment.outtest}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-md-4 mb-3">
+                <div class="card shadow-lg">
+                    <div class="card-header text-white bg-primary text-center"><h2>Submissions</h2>
+                    </div>
+                <ul id="submitted" class="list-group list-group-flush" style="max-height: 500px; margin-bottom: 10px; overflow:scroll; -webkit-overflow-scrolling: touch;">
+                    <script>
+                    $.ajax({
+                        type: "POST",
+                        url: '/student/submitted',
+                        data: {'assignmentID':'{{assignment._id}}'},
+                        success: function(data, msg){
+                            for(var i=0; i< data.length;i++){
+                                $('#submitted').append('<li class="list-group-item">'+JSON.stringify(data[i])+'</li>')
+                            }
+                        }
+                    });
                     </script>
-            {{!-- description --}}
-            <div class="col-md-12 mb-3">
-                <div class="bg-white rounded shadow p-3">
-                    <h3 class="text-left">Description:</h3>
-                    <hr>
-                    <p class="text-left">{{assignment.desc}}</p>
-                </div>
-            </div>
-        {{!-- input --}}
-            <div class="col-md-12 mb-3">
-                <div class="bg-white rounded shadow p-3">
-                    <h3 class="text-left">Input:</h3>
-                    <hr>
-                    <p style="white-space: pre-wrap;" class="text-left">{{assignment.input}}</p>
-                </div>
-            </div>
-        {{!-- output --}}
-            <div class="col-md-12 mb-3">
-                <div class="bg-white rounded shadow p-3">
-                    <h3 class="text-left">Output:</h3>
-                    <hr>
-                    <p style="white-space: pre-wrap;" class="text-left">{{assignment.output}}</p>
-                </div>
-            </div>
-        {{!-- Example in box--}}
-            <div class="col-md-6 mb-5">
-                <div class="bg-white rounded shadow p-3">
-                    <h3 class="text-left">Example Input:</h3>
-                    <hr>
-                    <p style="white-space: pre-wrap;" class="text-left">{{assignment.intest}}</p>
-                </div>
-            </div>
-            <div class="col-md-6 mb-5">
-                <div class="bg-white rounded shadow p-3">
-                    <h3 class="text-left">Example Output:</h3>
-                    <hr>
-                    <p style="white-space: pre-wrap;" class="text-left">{{assignment.outtest}}</p>
+                </ul>
                 </div>
             </div>
             {{!-- Editor--}}

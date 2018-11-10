@@ -10,6 +10,11 @@
         {{#if error_msg}}
         <div class="alert alert-danger mt-3 text-center">{{error_msg}}</div>
     {{/if}}
+    <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4 mb-3"><input class="form-control text-center shadow-lg bg-white border-0" id="myInput" type="text" placeholder="Search.."></div>
+                <div class="col-md-4"></div>
+            </div>
     {{#each users}}
         <form method="post" action="/admin/manage">
             <div class="card rounded shadow p-3 mb-3">
@@ -31,4 +36,14 @@
             </div>
         </form>
     {{/each}}
+        <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("form").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
 </div>
