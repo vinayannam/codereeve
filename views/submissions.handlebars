@@ -1,0 +1,39 @@
+<div class="container mt-5 mb-5">
+    {{#if errors}}
+        {{#each errors}}
+            <div class="alert alert-danger mt-3 text-center">{{msg}}</div>
+        {{/each}}
+        {{/if}}
+        {{#if success_msg}}
+        <div class="alert alert-success mt-3 text-center">{{success_msg}}</div>
+        {{/if}}
+        {{#if error_msg}}
+        <div class="alert alert-danger mt-3 text-center">{{error_msg}}</div>
+    {{/if}}
+    {{#if sub}}
+
+    {{/if}}
+        <div class="form-row">
+             <div class="col-md-12 mb-3">
+                <div class="card shadow-lg">
+                    <div class="card-header text-white bg-primary text-center"><h2>Submissions</h2>
+                    </div>
+                <ul id="submitted" class="list-group list-group-flush" style="max-height: 500px; margin-bottom: 10px; overflow:scroll; -webkit-overflow-scrolling: touch;">
+                    <script>
+                    $.ajax({
+                        type: "POST",
+                        url: '/student/submitted',
+                        data: {'assignmentID':'{{id}}'},
+                        success: function(data, msg){
+                            $('#submitted').append('<li class="list-group-item"><div class="row">'+'<div class="col-md-6">Username</div>'+'<div class="col-md-3">Type</div>'+'<div class="col-md-3">Score</div>'+'</div></li>')
+                            for(var i=0; i< data.length;i++){
+                                $('#submitted').append('<li class="list-group-item"><div class="row">'+'<div class="col-md-6">'+data[i].user+'</div>'+'<div class="col-md-3">'+data[i].type+'</div>'+'<div class="col-md-3">'+data[i].score+'</div>'+'</div></li>')
+                            }
+                        }
+                    });
+                    </script>
+                </ul>
+                </div>
+            </div>
+        </div>
+</div>

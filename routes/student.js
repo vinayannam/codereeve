@@ -124,7 +124,10 @@ router.post('/run', ensureAuthenticated, function(req, res) {
                                     sol.push(false)
                                 }
                             }
+                            Submission.addScore(score, req.body.user, req.body.assignmentID, req.body.type, (err, result) => {
+                                if (err) throw err;
 
+                            });
                             res.send({ exitCode: 0, stdout: sol })
                         })
                     }
@@ -136,18 +139,27 @@ router.post('/run', ensureAuthenticated, function(req, res) {
     });
 })
 
+router.post('/submit', ensureAuthenticated, function(req, res) {
+    Submission.updateSubmission(req.body.user, req.body.assignmentID, req.body.type, (err, result) => {
+        if (err) throw err;
+    });
+    res.send({})
+})
+
 router.post('/submitted', ensureAuthenticated, function(req, res) {
     var assignmentID = req.body.assignmentID;
     Submission.getSubmissionByA(assignmentID, function(err, subissions) {
         if (err) throw err;
         var out = []
         subissions.forEach(element => {
-            out.push({
-                user: element.user,
-                datetime: (new Date(element.datetime)).toLocaleString(),
-                type: element.type,
-                score: element.score
-            })
+            if (element.submitted == true) {
+                out.push({
+                    user: element.user,
+                    datetime: (new Date(element.datetime)).toLocaleString(),
+                    type: element.type,
+                    score: element.score
+                })
+            }
         })
         res.send(out)
     });

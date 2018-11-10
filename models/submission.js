@@ -19,6 +19,14 @@ var SubmissionSchema = mongoose.Schema({
         type: Date,
         index: true,
         default: Date.now()
+    },
+    score: {
+        type: Number,
+        default: 0
+    },
+    submitted: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -63,4 +71,21 @@ module.exports.getSubmissionByUA = function(assignmentID, user, callback) {
 module.exports.getSubmissionByA = function(assignmentID, callback) {
     var query = { assignmentID: assignmentID }
     Submission.find(query, callback)
+}
+
+module.exports.addScore = function(score, user, assignmentID, type, callback) {
+    var query = { user: user, assignmentID: assignmentID, type: type }
+    Submission.findOneAndUpdate(query, { $set: { score: score } }, callback)
+}
+
+module.exports.updateSubmission = function(user, assignmentID, type, callback) {
+    var query1 = { user: user, assignmentID: assignmentID }
+    Submission.find(query, (err, result) => {
+        if (err) throw err;
+        result.forEach(element => {
+            Submission.findOneAndUpdate(element, { $set: { submitted: false } })
+        });
+    })
+    var query2 = { user: user, assignmentID: assignmentID, type: type }
+    Submission.findOneAndUpdate(query2, { $set: { submitted: true } }, callback)
 }

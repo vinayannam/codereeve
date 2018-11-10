@@ -96,8 +96,9 @@
                         url: '/student/submitted',
                         data: {'assignmentID':'{{assignment._id}}'},
                         success: function(data, msg){
+                            $('#submitted').append('<li class="list-group-item"><div class="row">'+'<div class="col-md-6">Username</div>'+'<div class="col-md-3">Type</div>'+'<div class="col-md-3">Score</div>'+'</div></li>')
                             for(var i=0; i< data.length;i++){
-                                $('#submitted').append('<li class="list-group-item">'+JSON.stringify(data[i])+'</li>')
+                                $('#submitted').append('<li class="list-group-item"><div class="row">'+'<div class="col-md-6">'+data[i].user+'</div>'+'<div class="col-md-3">'+data[i].type+'</div>'+'<div class="col-md-3">'+data[i].score+'</div>'+'</div></li>')
                             }
                         }
                     });
@@ -251,7 +252,22 @@
                     dataType: 'application/json'
                 });
             });
-            var score = 0;
+            $('#submit').on('click',()=>{
+                $('#mess-error').hide();
+                $('#mess-save').hide();
+                $('#testcases').hide();
+                $('#testcases').empty();
+                setTimeout(()=>{
+                    $('#mess-save').show();
+                }, 2000)
+                $('#mess-save').text('Submitted in '+codeLang);
+                $.ajax({
+                    type: "POST",
+                    url: '/student/submit',
+                    data: {type:codeLang, assignmentID:'{{assignment._id}}', user:'{{username}}'},
+                    dataType: 'application/json'
+                });
+            });
             $('#run').on('click',()=>{
                 $('#mess-error').hide();
                 $('#mess-save').hide();
@@ -281,7 +297,6 @@
                             for(var i=0 ;i< testcases.length; i++){
                                 if(testcases[i]){
                                     $('#testcases').append(s(i, 'success', 'passed'))
-                                    score++;
                                 }else{
                                     $('#testcases').append(s(i, 'danger','failed'))
                                 }

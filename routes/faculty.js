@@ -133,6 +133,8 @@ router.post('/manage', ensureAuthenticated, function(req, res) {
             assignment.newdatetime = datetime.toLocaleString()
             res.render('editassignment', assignment)
         });
+    } else if (type = "sub") {
+        res.render('submissions', { id: id, faculty: true })
     } else {
         Assignment.deleteAssignment(id);
         req.flash('success_msg', 'Successfully Deleted.');
