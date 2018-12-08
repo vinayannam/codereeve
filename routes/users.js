@@ -42,15 +42,20 @@ passport.deserializeUser(function(id, done) {
 });
 
 router.post('/login',
-    passport.authenticate('local', { successRedirect: '/', failureRedirect: '/users/login', failureFlash: true }),
+    passport.authenticate('local', { successRedirect: '/', failureRedirect: '/users/brutelogin', failureFlash: true }),
     function(req, res) {
-        req.flash('error_msg', "I don't know you.");
+        req.flash('error_msg', 'You are an intruder!.');
         res.redirect('/users/login');
     });
 
 router.get('/logout', function(req, res) {
     req.logout();
     req.flash('success_msg', 'Bye! Bye! Comrade!');
+    res.redirect('/users/login');
+});
+
+router.get('/brutelogin', function(req, res) {
+    req.flash('error_msg', 'You are an intruder!');
     res.redirect('/users/login');
 });
 

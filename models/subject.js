@@ -43,3 +43,9 @@ module.exports.getSubjects = function(callback) {
 module.exports.getAllEntries = function(callback) {
     Subject.find({}, callback)
 }
+
+module.exports.deleteSubject = function(subject) {
+    Subject.deleteOne(subject, function(err) {
+        if (err) throw err;
+    });
+}

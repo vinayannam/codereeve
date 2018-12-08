@@ -19,45 +19,56 @@
         <div class="col-md-4 mb-3"><input class="form-control text-center shadow-lg bg-white border-0" id="myInput" type="text" placeholder="Search.."></div>
         <div class="col-md-4"></div>
     </div>
-    <div class="list-group bg-white shadow">
+    <table class="table table-striped rounded bg-white shadow p-3 mb-3">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Deadline</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
     {{#each assignment}}
-        <form method="post" action="/student/assignment" class="list-group-item list-group-item-action">
-        <div onClick="javascript:this.parentNode.submit()" >
-            <input type="hidden" name="id" value="{{_id}}">
-            <div class="row">
-                <div class="col-md-8">
-                    <h5 class="card-title">{{title}} ({{subject}}) </h5>
-                </div>
-                <div class="col-md-4">
-                    <h5><span id="{{_id}}" class="badge badge-secondary"></span></h5>
-                    <script>
-                        var dt{{@index}} = new Date('{{datetime}}').getTime();
-                        var x = setInterval(function() {
-                            var now = new Date().getTime();
-                            var distance = dt{{@index}} - now;
-                            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                            document.getElementById("{{_id}}").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-                            if (distance < 0) {
-                                clearInterval(x);
-                                document.getElementById("{{_id}}").innerHTML = "EXPIRED";
-                                location.reload()
-                            }
-                        }, 1000);
-                    </script>
-                </div>
-            </div>
-        </div>
-        </form>
+        <tr>
+            <form method="post" action="/student/assignment">
+                <input type="hidden" name="id" value="{{_id}}">
+                <td>{{title}}</th>
+                <td>{{subject}}</td>
+                <td class="w-25"><h5><span id="{{_id}}" class="badge badge-secondary">00d 00h 00m 00s </span></h5>
+                <script>
+                    var dt{{@index}} = new Date('{{datetime}}').getTime();
+                    var x{{@index}} = setInterval(function() {
+                        var now = new Date().getTime();
+                        var distance = dt{{@index}} - now;
+                        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                        document.getElementById("{{_id}}").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+                        if (distance < 0) {
+                            clearInterval(x{{@index}});
+                            document.getElementById("{{_id}}").innerHTML = "EXPIRED";
+                            location.reload()
+                        }
+                    }, 1000);
+                </script>
+                </td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button class="btn btn-success" type="submit">Solve</button>
+                    </div>
+                </td>
+            </form>
+        </tr>
     {{/each}}
-    </div>
+    </tbody>
+    </table>
     <script>
         $(document).ready(function(){
             $("#myInput").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
-                $("form").filter(function() {
+                $("tbody tr").filter(function() {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });

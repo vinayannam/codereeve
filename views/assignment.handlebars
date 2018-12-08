@@ -36,8 +36,26 @@
                             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
                             document.getElementById("{{assignment._id}}").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+                            if(minutes == 5 && seconds == 0){
+                                var modal = document.getElementById('myModal');
+                                modal.style.display = "block";
+                                var span = document.getElementById("closem");
+                                span.onclick = function() {
+                                    modal.style.display = "none";
+                                }
+                                window.onclick = function(event) {
+                                    if (event.target == modal) {
+                                        modal.style.display = "none";
+                                    }
+                                }
+                            }
                             if (distance < 0) {
                                 clearInterval(x);
+                                {{#if sub}}
+                                $('.window').remove()
+                                $('button').remove()
+                                {{else}}
+                                {{/if}}
                                 document.getElementById("{{assignment._id}}").innerHTML = "EXPIRED";
                             }
                         }, 1000);
@@ -144,7 +162,7 @@
                         <option value="c" selected onclick="setEditor('c')">C</option>
                         <option value="cpp" onclick="setEditor('cpp')">C++</option>
                         <option value="java" onclick="setEditor('java')">Java</option>
-                        <option value="python" onclick="setEditor('python')">Python</option>
+                        <option value="py" onclick="setEditor('py')">Python</option>
                     </select>
                 </div>
                 <div class="window-body" >
@@ -165,16 +183,17 @@
         </div>
         <div id="testcases">
         </div>
+        {{/if}}
         <script>
             let languages = {
-                c: {'text':'// You are writing in C\n\n'+'#include<stdio.h>\n' + 'int main(){\n'+ '\tprintf("Code it the rght way :)");\n'+'}',
+                c: {'text':'#include<stdio.h>\n\n' + 'int main(){\n'+ '\t// Your code goes here \n'+'}',
                     'mode': 'text/x-csrc', 'type': 'c', 'assignmentID':'{{assignment._id}}'},
-                cpp: {'text':'// You are writing in C++\n\n'+'#include<stdio>\n' + 'int main(){\n'+ '\tprintf("Code it the rght way :)");\n'+'}',
+                cpp: {'text':'#include<iostream>\n\n' + 'using namespace std;\n\n' + 'int main(){\n'+ '\t// Your code goes here \n'+'}',
                       'mode': 'text/x-c++src', 'type': 'cpp', 'assignmentID':'{{assignment._id}}'},
-                java: {'text':'// You are writing in Java.\n\n'+'public class Problem{\n' + '\tpublic static void main(String args[]){\n'+ '\t\tSystem.out.println("Code it the rght way :)");\n'+'\t}\n'+'}',
+                java: {'text':'public class Problem{\n' + '\tpublic static void main(String args[]){\n'+ '\t\t // Your code goes here\n'+'\t}\n'+'}',
                     'mode': 'text/x-java', 'type': 'java', 'assignmentID':'{{assignment._id}}'},
-                python: {'text':'# You are writing in Python3\n\n'+'print("Code it the rght way :)")',
-                    'mode': 'python', 'type': 'python', 'assignmentID':'{{assignment._id}}'}
+                py: {'text':'# Your code goes here. Use raw_input() instead of input() for strings.\n',
+                    'mode': 'python', 'type': 'py', 'assignmentID':'{{assignment._id}}'}
             };
             $.ajax({
                 type: "POST",
@@ -208,6 +227,7 @@
                         foldGutter: true,
                         lint: true,
                         hint: 'anyword',
+                        {{#if sub}}{{else}}readOnly: 'nocursor',{{/if}}
                         gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", 'CodeMirror-lint-markers']
                     }
                 );
@@ -228,7 +248,7 @@
                         CodeMirror.showHint(instance, CodeMirror.hint.auto, {completeSingle:false});
                         if(selectedValue == 'java'){
 
-                        }else if(selectedValue == 'python'){
+                        }else if(selectedValue == 'py'){
                             CodeMirror.showHint(instance, CodeMirror.hint.python, {completeSingle:false});
                         }else{
                             CodeMirror.showHint(instance, CodeMirror.hint.c, {completeSingle:false});
@@ -236,6 +256,7 @@
                     }
                 });
             }
+            {{#if sub}}
             $('#save').on('click',()=>{
                 $('#mess-error').hide();
                 $('#mess-save').hide();
@@ -305,7 +326,20 @@
                     }
                 });
             });
+            {{/if}}
         </script>
         <script async type="text/javascript" src="codemirror/autocomplete.js"></script>
-    {{/if}}
+</div>
+
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-body">
+            <h3> 5 minutes is all you got.
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" id="closem" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+  </div>
 </div>

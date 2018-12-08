@@ -45,6 +45,14 @@ var AssignmentSchema = mongoose.Schema({
         type: Date,
         index: true,
         default: Date.now()
+    },
+    checked: {
+        type: Boolean,
+        default: false
+    },
+    plagiarised: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -84,4 +92,8 @@ module.exports.getAssignmentByClass = (sec, year, callback) => {
 module.exports.getOldAssignmentByClass = (sec, year, callback) => {
     var query = { section: sec, batch: year, datetime: { $lt: new Date() } };
     Assignment.find(query, callback);
+}
+
+module.exports.updateCheckedByID = function(id, callback) {
+    Assignment.updateOne({ _id: id }, { $set: { checked: true } }, callback);
 }

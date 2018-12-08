@@ -78,7 +78,7 @@ router.post('/run', ensureAuthenticated, function(req, res) {
         compiler = cpp
     } else if (req.body.type == 'java') {
         compiler = java
-    } else if (req.body.type == 'python') {
+    } else if (req.body.type == 'py') {
         compiler = python
     }
 
@@ -140,7 +140,7 @@ router.post('/run', ensureAuthenticated, function(req, res) {
 })
 
 router.post('/submit', ensureAuthenticated, function(req, res) {
-    Submission.updateSubmission(req.body.user, req.body.assignmentID, req.body.type, (err, result) => {
+    Submission.updateSubmission2(req.body.user, req.body.assignmentID, req.body.type, (err, result) => {
         if (err) throw err;
     });
     res.send({})

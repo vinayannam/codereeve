@@ -108,9 +108,19 @@ router.post('/manage', ensureAuthenticated, function(req, res) {
     var username = req.body.username
     var type = req.body.manage
     if (type == "edit") {
+        var thisYear = new Date().getFullYear();
+        var thisMonth = new Date().getMonth();
+        var years;
+        var sems = [1, 2, 3, 4, 5, 6, 7, 8]
+        if (thisMonth > 6) {
+            years = [{ year: thisYear - 3 }, { year: thisYear - 2 }, { year: thisYear - 1 }, { year: thisYear }]
+        } else {
+            years = [{ year: thisYear - 4 }, { year: thisYear - 3 }, { year: thisYear - 2 }, { year: thisYear - 1 }]
+        }
         User.getUserByUsername(username, (err, user) => {
             if (err) throw err;
             user.admin = true
+            user.years = years
             res.render('edit', user)
         });
     } else {
@@ -118,6 +128,18 @@ router.post('/manage', ensureAuthenticated, function(req, res) {
         req.flash('success_msg', 'Successfully Deleted.');
         res.redirect('/admin/manage');
     }
+});
+
+router.post('/coursesmanage', ensureAuthenticated, function(req, res) {
+    Subject.deleteSubject({
+        sem: req.body.sem,
+        subject: req.body.subject,
+        faculty: req.body.faculty,
+        year: req.body.year,
+        batch: req.body.batch
+    });
+    req.flash('success_msg', 'Successfully Deleted.');
+    res.redirect('/admin/courses');
 });
 
 router.post('/edit', ensureAuthenticated, function(req, res) {
@@ -178,7 +200,7 @@ router.post('/register', function(req, res) {
     var lastName = req.body.lastname;
     var userName = req.body.username;
     var password = req.body.password;
-    var user = req.body.user;
+    var type = req.body.user;
     var year = req.body.year;
     var section = req.body.section;
 
@@ -194,23 +216,35 @@ router.post('/register', function(req, res) {
             errors: errors
         });
     } else {
-        var newUser = new User({
-            firstName: firstName,
-            lastName: lastName,
-            userName: userName,
-            password: password,
-            user: user,
-            year: year,
-            section: section
-        });
 
-        User.createUser(newUser, function(err, user) {
+
+        User.getUserByUsername(userName, (err, user) => {
             if (err) throw err;
-        });
+            if (user == null) {
+                var newUser = new User({
+                    firstName: firstName,
+                    lastName: lastName,
+                    userName: userName,
+                    password: password,
+                    user: type,
+                    year: year,
+                    section: section
+                });
 
-        req.flash('success_msg', 'Successfully Registered.');
+                User.createUser(newUser, function(err, user) {
+                    if (err) throw err;
+                });
 
-        res.redirect('/admin/');
+                req.flash('success_msg', 'Successfully Registered.');
+
+                res.redirect('/admin/');
+            } else {
+                req.flash('error_msg', 'Username already exists.');
+
+                res.redirect('/admin/');
+            }
+
+        })
     }
 });
 

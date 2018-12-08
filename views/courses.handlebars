@@ -17,26 +17,47 @@
                 <div class="col-md-4"></div>
             </div>
     </form>
-    <div class="row">
-        {{#each entries}}
-            <div class="col-md-4 entries">
-                <div class="card rounded shadow p-3 mb-3">
-                    <div class="card-body">
-                        <p class="card-text">Sem: {{sem}} - {{subject}} ({{batch}}, {{year}})</p>
-                        <p class="card-text">{{faculty}}</p>
-                    </div>
-                </div>
-            </div>
-        {{/each}}
-        <script>
-        $(document).ready(function(){
-            $("#myInput").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $(".entries").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
+    <table class="table table-striped rounded bg-white shadow p-3 mb-3">
+        <thead>
+            <tr>
+                <th scope="col">Subject</th>
+                <th scope="col">Semester</th>
+                <th scope="col">Batch</th>
+                <th scope="col">Year</th>
+                <th scope="col">Faculty</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each entries}}
+            <tr>
+                <form method="post" class="entries" action="/admin/coursesmanage">
+                    <input type="hidden" name="sem" value="{{sem}}">
+                    <input type="hidden" name="subject" value="{{subject}}">
+                    <input type="hidden" name="batch" value="{{batch}}">
+                    <input type="hidden" name="year" value="{{year}}">
+                    <input type="hidden" name="faculty" value="{{faculty}}">
+                    <td>{{subject}}</th>
+                    <td>{{sem}}</td>
+                    <td>{{batch}}</td>
+                    <td>{{year}}</td>
+                    <td>{{faculty}}</td>
+                    <td>
+                        <button class="btn btn-danger" type="submit" name="manage" value="delete" data-toggle="confirmation">Delete</button>
+                    </td>
+                </form>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <script>
+    $(document).ready(function(){
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("tbody tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
-    </script>
-    </div>
+    });
+</script>
 </div>

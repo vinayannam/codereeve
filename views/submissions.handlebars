@@ -13,27 +13,152 @@
     {{#if sub}}
 
     {{/if}}
-        <div class="form-row">
-             <div class="col-md-12 mb-3">
-                <div class="card shadow-lg">
-                    <div class="card-header text-white bg-primary text-center"><h2>Submissions</h2>
+    <form class="mb-3" method="post" action="/faculty/plagiarism">
+    <input type="hidden" name="assignmentID" value="{{ass}}">
+    <input type="hidden" name="plagiarised" value="{{plagiarised}}">
+        <div class="row">
+            {{#if pc}}
+            <div class="col-md-4"></div>
+            {{/if}}
+            {{#if pcn}}
+            <div class="col-md-4"><button class="btn btn-primary w-100" type="submit" name="palgiarismNorm">Auto Plagiarism Norm</button></div>
+            {{/if}}
+            <div class="col-md-4 mb-3"><input class="form-control text-center shadow-lg bg-white border-0" id="myInput" type="text" placeholder="Search.."></div>
+            <div class="col-md-4"></div>
+        </div>
+    </form>
+    <script src="codemirror/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="codemirror/lib/codemirror.css"/>
+    <link rel="stylesheet" href="codemirror/theme/monokai.css"/>
+    <link rel="stylesheet" href="codemirror/addon/hint/show-hint.css"/>
+    <link rel="stylesheet" href="codemirror/addon/fold/foldgutter.css"/>
+    <link rel="stylesheet" href="codemirror/addon/dialog/dialog.css"/>
+    <link rel="stylesheet" href="codemirror/addon/lint/lint.css"/>
+    <script src="codemirror/mode/javascript/javascript.js"></script>
+    <script src="codemirror/mode/clike/clike.js"></script>
+    <script src="codemirror/mode/python/python.js"></script>
+    <script src="codemirror/addon/hint/c-hint.js"></script>
+    <script src="codemirror/addon/hint/python-hint.js"></script>
+    <script src="codemirror/addon/hint/show-hint.js"></script>
+    <script src="codemirror/addon/hint/anyword-hint.js"></script>
+    <script src="codemirror/addon/fold/foldcode.js"></script>
+    <script src="codemirror/addon/fold/foldgutter.js"></script>
+    <script src="codemirror/addon/fold/brace-fold.js"></script>
+    <script src="codemirror/addon/fold/comment-fold.js"></script>
+    <script src="codemirror/addon/fold/indent-fold.js"></script>
+    <script src="codemirror/addon/dialog/dialog.js"></script>
+    <script src="codemirror/addon/search/searchcursor.js"></script>
+    <script src="codemirror/addon/search/search.js"></script>
+    <script src="codemirror/addon/edit/matchbrackets.js"></script>
+    <script src="codemirror/addon/edit/closebrackets.js"></script>
+    <script src="codemirror/addon/lint/lint.js"></script>
+    <script src="codemirror/addon/mode/loadmode.js"></script>
+    <script src="codemirror/addon/runmode/runmode.js"></script>
+    <script src="codemirror/underscore-min.js"></script>
+    <table class="table table-striped rounded bg-white shadow p-3 mb-3">
+        <thead>
+            <tr>
+                <th scope="col">Student</th>
+                <th scope="col">Language</th>
+                <th scope="col">Score</th>
+                <th scope="col">Plagiarism(100)</th>
+                <th scope="col">Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each entries}}
+            <tr>
+                <input type="hidden" name="user" value="{{user}}">
+                <input type="hidden" name="type" value="{{type}}">
+                <input type="hidden" name="batch" value="{{score}}">
+                <input type="hidden" name="plagiarism" value="{{plagiarism}}">
+                <input type="hidden" name="assignmentID" value="{{assignmentID}}">
+                <td>{{user}}</th>
+                <td>{{type}}</td>
+                <td>{{score}}</td>
+                <td>{{plagiarism}}</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button class="btn btn-secondary" onclick="setEditor('{{user}}', '{{type}}', '{{assignmentID}}')" data-toggle="modal" data-target="#myModal">Show</button>
                     </div>
-                <ul id="submitted" class="list-group list-group-flush" style="max-height: 500px; margin-bottom: 10px; overflow:scroll; -webkit-overflow-scrolling: touch;">
-                    <script>
-                    $.ajax({
-                        type: "POST",
-                        url: '/student/submitted',
-                        data: {'assignmentID':'{{id}}'},
-                        success: function(data, msg){
-                            $('#submitted').append('<li class="list-group-item"><div class="row">'+'<div class="col-md-6">Username</div>'+'<div class="col-md-3">Type</div>'+'<div class="col-md-3">Score</div>'+'</div></li>')
-                            for(var i=0; i< data.length;i++){
-                                $('#submitted').append('<li class="list-group-item"><div class="row">'+'<div class="col-md-6">'+data[i].user+'</div>'+'<div class="col-md-3">'+data[i].type+'</div>'+'<div class="col-md-3">'+data[i].score+'</div>'+'</div></li>')
-                            }
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("tbody tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+        function setEditor(user, type, assId){
+            var mode;
+            if (type == 'c'){
+                mode = 'text/x-csrc'
+            }
+            if (type == 'cpp'){
+                mode = 'text/x-c++src'
+            }
+            if (type == 'java'){
+                mode = 'text/x-java'
+            }
+            if (type == 'py'){
+                mode = 'python'
+            }
+            $.ajax({
+                type: "POST",
+                url: '/faculty/saved',
+                data: {'assignmentID':assId, 'userName':user},
+                success: function(data, msg){
+                    for(var i=0; i< data.length;i++){
+                        if(data[i].type == type){
+                            let codemirror = CodeMirror.fromTextArea(document.getElementById('editor'),
+                                {
+                                    lineNumbers: true,
+                                    matchBrackets: true,
+                                    closeBrackets: true,
+                                    mode: {name: mode, globalVars: true},
+                                    lineWrapping: true,
+                                    theme: "monokai",
+                                    tabSize: 4,
+                                    indentUnit: 4,
+                                    foldGutter: true,
+                                    lint: true,
+                                    hint: 'anyword',
+                                    readOnly: 'nocursor',
+                                    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", 'CodeMirror-lint-markers']
+                                }
+                            );
+                        codemirror.setValue(data[i].code)
+                        codemirror.setSize(null, 500);
                         }
-                    });
-                    </script>
-                </ul>
+                    }
+                }
+            });
+        }
+    </script>
+</div>
+
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="window">
+                <div class="window-header">
+                    <div class="action-buttons"></div>
+                </div>
+                <div class="window-body" >
+                    <textarea id="editor" class="code-input"></textarea>
                 </div>
             </div>
         </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+  </div>
 </div>

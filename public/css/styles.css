@@ -142,3 +142,7 @@ label {
     color: #999;
     resize: none;
 }
+
+.modal .modal-dialog {
+    max-width: 850px !important;
+}
